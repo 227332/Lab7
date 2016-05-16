@@ -1,5 +1,9 @@
 package it.polito.tdp.dizionario.model;
 
+/*
+ * La seguente classe è un Java Beans che mi rappresenta come oggetto una Parola del dizionario
+ */
+
 public class Parola {
 	
 	private int id ;

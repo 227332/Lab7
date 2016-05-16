@@ -14,8 +14,6 @@ import javafx.scene.control.TextField;
 
 public class DizionarioController {
 
-	private Model model;
-
 	@FXML
 	private ResourceBundle resources;
 
@@ -46,6 +44,13 @@ public class DizionarioController {
 
 	@FXML
 	private TextArea txtResult;
+	
+	private Model model;
+	
+	public void setModel(Model model) {
+		this.model = model;
+	}
+
 
 	@FXML
 	void doGeneraGrafo(ActionEvent event) {
@@ -54,6 +59,7 @@ public class DizionarioController {
 
 		Integer lun;
 		try {
+			//siccome lunS è String, provo a convertirlo in Integer
 			lun = Integer.parseInt(lunS);
 		} catch (NumberFormatException e) {
 			txtResult.appendText("Formato errato: " + lunS + "\n");
@@ -61,8 +67,12 @@ public class DizionarioController {
 		}
 
 		long startTime = System.nanoTime() ;
+		//riempio, nel model, una List contenente tutte le parole del dizionario lunghe lun
 		model.caricaParole(lun);
 		
+		//costruisco il grafo
+		//RICORDA: è buona norma NON avere nessun elemento di tipo JGraphT nel Controller,
+		// ovvero il grafo è giusto che stia solo nel model
 		model.buildGraph();
 		long endTime = System.nanoTime() ;
 
@@ -78,6 +88,7 @@ public class DizionarioController {
 
 	@FXML
 	void doTrovaTutti(ActionEvent event) {
+		//stampa tutte le parole connesse con qualche path alla parola da me inserita
 		
 		String s = txtParola.getText() ;
 		
@@ -109,7 +120,7 @@ public class DizionarioController {
 		
 		List<Parola> vicini = model.getVicini(s) ;
 		if (vicini==null) {
-			txtResult.appendText("Parola inesistente!\n");
+			txtResult.appendText("Parola inesistente!\n");//ogni parola esistente ha almeno un vicino
 			return ;
 		}
 		
@@ -152,7 +163,5 @@ public class DizionarioController {
 
 	}
 
-	public void setModel(Model model) {
-		this.model = model;
-	}
+
 }
